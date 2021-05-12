@@ -1,0 +1,46 @@
+version: '3.4'
+
+services:
+  db:
+    container_name: think_stream_db
+    build:
+      context: .
+      dockerfile: ./docker/dockerfile-db
+    image: think_stream_db
+    volumes:
+      - ./src/thinkStream/db_init:/docker-entrypoint-initdb.d/
+      - mysql-data:/var/lib/mysql
+    networks:
+      - think_stream_nw
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_APP_PASSWORD: ${MYSQL_APP_PASSWORD}
+      MYSQL_APP_USER: ${MYSQL_APP_USER}
+  webapp:
+    container_name: think_stream_web
+    build:
+      context: .
+      dockerfile: ./docker/dockerfile-web
+      target: prod
+    ports:
+      - "80:80"
+      - "443:443"
+    image: think_stream_web
+    networks:
+      - think_stream_nw
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_APP_PASSWORD: ${MYSQL_APP_PASSWORD}
+      MYSQL_APP_USER: ${MYSQL_APP_USER}
+      AUTHTKT_SECRET: ${AUTHTKT_SECRET}
+      SIGNED_COOKIE_SESSION_SECRET: ${SIGNED_COOKIE_SESSION_SECRET}
+
+volumes:
+  mysql-data:
+    driver: local
+
+networks:
+  think_stream_nw:
+    driver: bridge

@@ -1,0 +1,17 @@
+{
+    "python.pythonPath": "/usr/local/bin/python3.7",
+    "python.workspaceSymbols.enabled": true,
+    "python.autoComplete.extraPaths": [
+        "/usr/local/lib/python3.7/site-packages/pyramid/",
+        "/opt/project/thinkStream/src/thinkStream/",
+    ],
+    "python.analysis.logLevel": "Information",
+    "python.linting.mypyEnabled": true,
+    "python.linting.pylintEnabled": false,
+    "python.linting.mypyArgs": [
+        "--ignore-missing-imports",
+        "--follow-imports=silent",
+        "--show-column-numbers",
+        "--strict"
+    ],
+}

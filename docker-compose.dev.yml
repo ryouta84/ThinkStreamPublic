@@ -1,0 +1,21 @@
+version: '3.4'
+# for develop environment
+services:
+  db:
+    volumes:
+      - mysql-test-data:/var/lib/mysql
+  webapp:
+    build:
+      target: develop
+    image: think_stream_web_dev
+    entrypoint:
+      - pserve
+    command: [--reload, /opt/thinkStream/src/thinkStream/development.ini]
+    ports:
+     - "8080:80"
+    volumes:
+     - .:/opt/thinkStream/
+
+volumes:
+  mysql-test-data:
+    driver: local

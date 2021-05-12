@@ -1,0 +1,4 @@
+include src/thinkStream/production.ini
+recursive-include src/thinkStream/db_init *
+recursive-include src/thinkStream/static *
+recursive-include src/thinkStream/templates *

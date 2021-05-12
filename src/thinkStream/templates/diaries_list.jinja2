@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script type="text/javascript" src="static/js/marked.js"></script>
+    <script type="text/javascript" src="static/js/editor.js"></script>
+    <link rel="stylesheet" href="static/css/signin.css">
+    <script type="text/javascript">
+    $(function() {
+      $('a').click(function() {
+        $('#stream_name').html($(this).html() + ' STREAM')
+      })
+    })
+    </script>
+    <script>
+      $(function () {
+        $('#myTab li:last-child a').tab('show')
+      })
+    </script>
+    <style type="text/css">
+      .update-btn {color:#9997AE;}
+      .nav-link {color:#EAB947;}
+      .create-btn {color:#EB6644;}
+    </style>
+  </head>
+  <body>
+    <div class="container-fluid d-flex flex-column flex-grow-1 vh-100 overflow-hidden">
+    <div class="row">
+        <p>logged_in:{{logged_in}}</p>
+      </div>
+    <div class="row">
+      <a class="create-btn" href="edit">Create New Diary</a>
+    </div>
+    <div class="row flex-grow-1 overflow-hidden">
+        <div class="col-3 mh-100 overflow-auto py-2">
+            <h3>THOUGHTS</h3>
+            <ul class="nav flex-column" id="myTab" role="tablist">
+              {% for key, diary_list in diaries_list.items() %}
+                <li class="nav-item">
+                  <a class="nav-link" id="body{{loop.index0}}-tab" href="#body{{loop.index0}}" data-toggle="tab" role="tab" aria-controls="body{{loop.index0}}" aria-selected="true">{{key}}</a>
+                </li>
+              {% endfor %}
+            </ul>
+        </div>
+        <div class="col-9 mh-100 overflow-auto py-2">
+            <h3 id="stream_name">STREAM</h3>
+              <div class="tab-content">
+              {% for key, diary_list in diaries_list.items() %}
+                <div class="tab-pane" id="body{{loop.index0}}" role="tabpanel" aria-labelledby="body{{loop.index0}}-tab">
+                  {% for diary in diary_list %}
+                    <p><a class="update-btn" href="edit?id={{diary.id}}">{{ diary.title}} : {{ diary.updated}}</a></p>
+                    <div hidden class="raw_markdown">{{ diary.body }}</div>
+                    <div class="markdown mb-1" style="border-style: solid;"></div>
+                  {% endfor %}
+                </div>
+              {% endfor %}
+              </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,42 @@
+FROM python:3.7.3-slim AS base
+
+RUN ln -sf  /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
+RUN apt update && apt install -y --no-install-recommends \
+    vim \
+    git \
+    && apt clean \
+    && rm -rf /var/lib/apt/lists/*
+RUN mkdir -p /opt/thinkStream
+WORKDIR /opt/thinkStream
+COPY src ./src
+COPY setup.py ./
+COPY MANIFEST.in ./
+COPY README.txt ./
+COPY CHANGES.txt ./
+
+FROM base as prod
+RUN useradd thinkStream_staff && mkdir -p /home/thinkStream_staff
+RUN apt update && apt install -y --no-install-recommends \
+    apache2 \
+    apache2-dev \
+    && apt clean \
+    && rm -rf /var/lib/apt/lists/*
+COPY config/web/apache2.conf /etc/apache2/
+COPY config/web/000-default.conf /etc/apache2/sites-available/
+COPY config/web/modwsgi.conf /etc/apache2/mods-available/
+RUN ln -s /etc/apache2/mods-available/modwsgi.conf /etc/apache2/mods-enabled/modwsgi.conf
+WORKDIR /opt/thinkStream
+RUN pip install .
+ENTRYPOINT ["apache2ctl"]
+CMD ["-D", "FOREGROUND"]
+
+FROM base as develop
+# apache2-devはsetup.pyで開発環境には不要だがmod_wsgiをインストールする際に必要なので仕方なく入れる
+RUN apt update && apt install -y --no-install-recommends \
+    apache2-dev \
+    && apt clean \
+    && rm -rf /var/lib/apt/lists/*
+WORKDIR /opt/thinkStream
+RUN pip install -e .[develop]
+ENTRYPOINT ["pserve"]
+CMD ["--reload", "/opt/thinkStream/src/thinkStream/development.ini"]

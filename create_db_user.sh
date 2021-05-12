@@ -1,0 +1,2 @@
+#! /bin/bash
+mysql -uroot -p$MYSQL_ROOT_PASSWORD -e "CREATE USER '$MYSQL_APP_USER'@'%' IDENTIFIED BY '$MYSQL_APP_PASSWORD';GRANT ALL ON thinkStream_user.* TO '$MYSQL_APP_USER'@'%';"

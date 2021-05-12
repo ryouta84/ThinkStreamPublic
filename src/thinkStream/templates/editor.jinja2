@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script type="text/javascript" src="static/js/marked.js"></script>
+    <script type="text/javascript" src="static/js/editor.js"></script>
+
+    <style type="text/css">
+      textarea {font-size: 30; font-family: sans-serif;}
+    </style>
+    <link rel="stylesheet" href="static/css/signin.css">
+
+  </head>
+  <body>
+    <div class="container-fluid">
+    <div class="container col-xl-11">
+      <div class="row">
+        {% if request.session.peek_flash('msg') %}
+          <div class="alert alert-warning">
+            <h1 class="h2 mb-1 font-weight-normal">{{ request.session.pop_flash('msg')[0] }}</h1>
+          </div>
+        {% endif %}
+      </div>
+      <div class="row">
+        <p>{{time}}</p>
+      </div>
+      <div class="row">
+        <p>logged_in:{{logged_in}}</p>
+      </div>
+      <div class="row">
+        <a href="diaries_list">Diary List</a>
+      </div>
+      <div class="row">
+        <div class="col-xl-6 col-lg-12 col-md-12">
+          {% if id %}
+          <form action="/update" method="POST">
+            TITLE<input type="text" id="title" name="title" class="form-control mb-3" value="{{diary.title}}" maxlength="200">
+            THOUGHT<p id="thought" name="thought">{{diary.thought.thought}}</p>
+            <textarea id="editor" name="input_markdown" class="form-control mb-4" rows="20" cols="100">{{diary.body}}</textarea>
+            <input type="submit" name="update" value="update" class="btn btn-lg btn-primary btn-block">
+            <input type="hidden" name="id" value="{{id}}">
+          </form>
+          {% else %}
+          <form action="/create_diary" method="POST">
+            TITLE<input type="text" id="title" name="title" class="form-control mb-3" maxlength="200" required>
+            THOUGHT<input type="text" id="thought" name="thought" class="form-control mb-3" maxlength="100" required>
+            <textarea class="editor" id="editor" name="input_markdown" class="form-control mb-4" rows="20" cols="100" required></textarea>
+            <input type="submit" value="create" class="btn btn-lg btn-primary btn-block">
+          </form>
+          {% endif %}
+        </div>
+        <div class="col-xl-6 col-lg-12 col-md-12">
+          <div class="markdown" id="markdown" style="border-style: solid; border-color: #925e88;">
+          </div>
+       </div>
+      </div>
+    </div>
+    </div>
+</body>
+</html>

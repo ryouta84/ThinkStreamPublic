@@ -1,0 +1,10 @@
+def includeme(config) -> None:
+    config.add_static_view('static', 'static', cache_max_age=5)
+    config.add_route('home', '/')
+    config.add_route('create_user', '/create_user')
+    config.add_route('login', '/login')
+    config.add_route('edit', '/edit')
+    config.add_route('update', '/update')
+    config.add_route('diaries_list', '/diaries_list')
+    config.add_route('test', '/test')
+    config.add_route('create_diary', '/create_diary')
