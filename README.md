@@ -3,16 +3,16 @@
 ## image
 
 アカウント作成ができるトップページ  
-![TOP](image/top.png]
+![TOP](image/top.png)
 
 ログインページ  
-![login](image/login.png]
+![login](image/login.png)
 
 メモ作成ページ  
-![create](image/create.png]
+![create](image/create.png)
 
 ログインユーザーが作成したメモ一覧ページ  
-![home](image/all_diary.png]
+![home](image/all_diary.png)
 
 ## Getting Started
 ---------------
